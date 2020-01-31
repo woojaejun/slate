@@ -17,7 +17,7 @@ const paramObject = {apikey: publicKey, nonce: now, market: 'btc-eth', quantity:
   "success" : true,
   "message" : "",
   "result" : {
-    "uuid": "5214"
+    "uuid": 5214
   }
 }
 ```
@@ -67,7 +67,7 @@ const paramObject = {apikey: publicKey, nonce: now, market: 'btc-eth', quantity:
   "success" : true,
   "message" : "",
   "result" : {
-    "uuid": "1477"
+    "uuid": 1477
   }
 }
 ```
