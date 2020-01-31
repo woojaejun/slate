@@ -2,16 +2,16 @@
 title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+  - javascript: node.js
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
+  - <a href='http://dovewallet.com' target='_blank'>Dove Wallet</a>
+  - <a href='http://developer.dovewallet.com/api/v1.1' target='_blank'>API V1</a>
 
 includes:
+  - public
+  - market
+  - account
   - errors
 
 search: true
@@ -19,221 +19,73 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Dovewallet API! You can use our API to access Dovewallet API endpoints, which can get information on various coin markets in our database.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in node.js! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Our APIs basically follow the rules of bittrex APIs. 
+
+<aside class="notice">
+The `market` parameter follows the bittrex rules. A base currency is followed by a counter currency. Please make sure the order of markets.
+<br>ex) btc-eth : btc - a base currency / eth - a counter currency
+</aside>
+<aside class="notice">
+You can use the `market` parameter in an uppercase style.
+</aside>
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
 ```javascript
-const kittn = require('kittn');
+const crypto = require('crypto');
+const request = require('request');
+const querystring = require('querystring');
 
-let api = kittn.authorize('meowmeowmeow');
+const BASE_URL = 'https://api.dovewallet.com/v1.1';
+const method = "/market/buylimit";
+const publicKey = "90d1415d13d8ea7061ccce5d26d99fe89c29b461";
+const secretKey = "b9c100a09d553650dd8cbeaffc21d1";
+const url = BASE_URL + method;
+const now = Date.now();
+
+const paramObject = {apikey: publicKey, nonce: now, market: 'dash-btc', quantity: '1', rate: '1'};
+const query = querystring.stringify(objectSort(paramObject));
+const apisign = crypto.createHmac('sha512', secretKey).update(url + "?" + query).digest('hex');
+
+const options = {
+    url: url + "?" + query,
+    headers: {
+        "apisign": apisign
+    }
+}
+
+request(options, (error, response, body) => {
+    if (error || response.statusCode != 200) {
+        console.log(error, response.statusCode);
+        return;
+    }
+
+    console.log(JSON.stringify(body));
+});
+
+function objectSort(object) {
+    let newObject = Object.create(null);
+    for(let key of Object.keys(object).sort()) {
+        newObject[key] = object[key];
+    }
+    return newObject;
+}
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `publicKey, secretKey` with your API keys. and please replace `method, parameters` with what you want.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Dovewallet uses API keys to allow access to the private APIs. You can register a new Dovewallet API key on our [my-page/api](https://dovewallet.com/my-page/api) page.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Dovewallet expects for the apisign to be included in private API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`apisign: 0ba5264acef900423cb31f02a6f1a2933e64004fbeb2f0187135665a73e5afabdd4eef3d41dcf8b9ef929793b332b1e2e75401190411cfb4372bc3eabb6bb40b`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must make an apisign with your personal API keys.
 </aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-

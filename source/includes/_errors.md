@@ -1,22 +1,37 @@
 # Errors
 
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
+The Dovewallet API uses the following error messages:
 
-The Kittn API uses the following error codes:
-
-
-Error Code | Meaning
+Error Message | Meaning
 ---------- | -------
-400 | Bad Request -- Your request is invalid.
-401 | Unauthorized -- Your API key is wrong.
-403 | Forbidden -- The kitten requested is hidden for administrators only.
-404 | Not Found -- The specified kitten could not be found.
-405 | Method Not Allowed -- You tried to access a kitten with an invalid method.
-406 | Not Acceptable -- You requested a format that isn't json.
-410 | Gone -- The kitten requested has been removed from our servers.
-418 | I'm a teapot.
-429 | Too Many Requests -- You're requesting too many kittens! Slow down!
-500 | Internal Server Error -- We had a problem with our server. Try again later.
-503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
+NETWORK_ERROR | Network Error.
+DB_ERROR | DB Error.
+UNEXPECTED_ERROR | Unexpected Error.
+NO_DATA | There is no data.
+ACCOUNT_LOCKED | The user account is locked.
+WITHDRAWAL_NOT_AVAILABLE | The withdrawal request for the currency is not available.
+EXCEEDED_WITHDRAWAL_LIMIT | The withdrawal request is exceeded the one day withdrawal limit.
+BELOW_MIN_WITHDRAWAL_LIMIT | The withdrawal request is below the minimum withdrawal limit.
+NOT_ENOUGH_BALANCE | The wallet doesn't have enough currency. Check your available balance.
+TOO_MANY_ORDERS | You have too many open orders.
+WRONG_KEY | There is a no api key.
+NO_PERMISSION | The api key has no permission.
+KEY_NOT_MATCHING | The api key doesn't match with yours.
+INVALID_MARKET | The market name is wrong.
+INVALID_TYPE | The order type is wrong.
+INVALID_NONCE | The nonce is wrong.
+INVALID_NUMBER | The number is wrong.
+INVALID_ORDER_ID | The order id is wrong.
+INVALID_CURRENCY | The currency is wrong.
+INVALID_ADDRESS | The address is wrong.
+INVALID_WALLETID | The wallet id is wrong.
+INVALID_QUANTITY_OR_RATE | The quantity or the rate is wrong.
+INVALID_RANGE_OF_TOTAL | The total is over the range.
+INVALID_UUID | The uuid is wrong.
+INVALID_SIGN | The sign is wrong.
+MARKET_NOT_PROVIDED | The market name is missing.
+TYPE_NOT_PROVIDED | The order type is missing.
+CURRENCY_NOT_PROVIDED | The currency is missing.
+QUANTITY_NOT_PROVIDED | The quantity is missing.
+UUID_NOT_PROVIDED | The uuid is missing.
+APIKEY_OR_APISIGN_NOT_PROVIDED | The api key or the apisign is missing.
