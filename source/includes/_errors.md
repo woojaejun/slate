@@ -10,6 +10,7 @@ UNEXPECTED_ERROR | Unexpected Error.
 NO_DATA | There is no data.
 ACCOUNT_LOCKED | The user account is locked.
 WITHDRAWAL_NOT_AVAILABLE | The withdrawal request for the currency is not available.
+VERIFICATION_NEEDED_FOR_WITHDRAWAL | You need higher verification level to make withdrawal requests.
 EXCEEDED_WITHDRAWAL_LIMIT | The withdrawal request is exceeded the one day withdrawal limit.
 BELOW_MIN_WITHDRAWAL_LIMIT | The withdrawal request is below the minimum withdrawal limit.
 NOT_ENOUGH_BALANCE | The wallet doesn't have enough currency. Check your available balance.
